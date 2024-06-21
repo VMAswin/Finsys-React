@@ -377,42 +377,48 @@ class Fin_CNotification(models.Model):
 
 # Vendors
 
-# class Fin_Vendor(models.Model):
-#     Title = models.CharField(max_length=10,null=True)
-#     First_name = models.CharField(max_length=50,null=True)
-#     Last_name = models.CharField(max_length=50,null=True)
-#     Vendor_email = models.EmailField(null=True)
-#     Mobile = models.CharField(max_length=25,null=True)
-#     Company_Name = models.CharField(max_length=100,null=True)
-#     Location = models.CharField(max_length=100,null=True)
-#     Website = models.CharField(max_length=100,null=True,default='')
-#     GST_Treatment = models.CharField(max_length=50,null=True)
-#     GST_Number = models.CharField(max_length=50,null=True)
-#     Pan_Number = models.CharField(max_length=50,null=True)
-#     Opening_balance_type = models.CharField(max_length=50,null=True)
-#     Opening_balance = models.FloatField(null=True,default=0.0)
-#     Current_balance = models.FloatField(null=True,default=0.0)
-#     Credit_limit = models.FloatField(null=True,default=0.0)
-#     Place_of_supply = models.CharField(max_length=200,null=True)
-#     Billing_street = models.CharField(max_length=200,null=True)
-#     Billing_city = models.CharField(max_length=200,null=True)
-#     Billing_state = models.CharField(max_length=200,null=True)
-#     Billing_country = models.CharField(max_length=200,null=True)
-#     Billing_pincode = models.CharField(max_length=10,null=True)
-#     Shipping_street = models.CharField(max_length=200,null=True)
-#     Shipping_city = models.CharField(max_length=200,null=True)
-#     Shipping_state = models.CharField(max_length=200,null=True)
-#     Shipping_country = models.CharField(max_length=200,null=True)
-#     Shipping_pincode = models.CharField(max_length=10,null=True)
-#     vendor_status = (
-#         ('Active','Active'),
-#         ('Inactive','Inactive'),
-#     )
-#     status = models.CharField(max_length=100,null=True,choices=vendor_status,default='Active')
-#     Company = models.ForeignKey(Fin_Company_Details,on_delete=models.CASCADE,null=True)
-#     Login_details = models.ForeignKey(Fin_Login_Details,on_delete=models.CASCADE,null=True)
+class Fin_Vendor(models.Model):
+    Title = models.CharField(max_length=10,null=True)
+    First_name = models.CharField(max_length=50,null=True)
+    Last_name = models.CharField(max_length=50,null=True)
+    Vendor_email = models.EmailField(null=True)
+    Mobile = models.CharField(max_length=25,null=True)
+    Company_Name = models.CharField(max_length=100,null=True)
+    Location = models.CharField(max_length=100,null=True)
+    Website = models.CharField(max_length=100,null=True,default='')
+    GST_Treatment = models.CharField(max_length=50,null=True)
+    GST_Number = models.CharField(max_length=50,null=True)
+    Pan_Number = models.CharField(max_length=50,null=True)
+    Opening_balance_type = models.CharField(max_length=50,null=True)
+    Opening_balance = models.FloatField(null=True,default=0.0)
+    Current_balance = models.FloatField(null=True,default=0.0)
+    Credit_limit = models.FloatField(null=True,default=0.0)
+    Place_of_supply = models.CharField(max_length=200,null=True)
+    Billing_street = models.CharField(max_length=200,null=True)
+    Billing_city = models.CharField(max_length=200,null=True)
+    Billing_state = models.CharField(max_length=200,null=True)
+    Billing_country = models.CharField(max_length=200,null=True)
+    Billing_pincode = models.CharField(max_length=10,null=True)
+    Shipping_street = models.CharField(max_length=200,null=True)
+    Shipping_city = models.CharField(max_length=200,null=True)
+    Shipping_state = models.CharField(max_length=200,null=True)
+    Shipping_country = models.CharField(max_length=200,null=True)
+    Shipping_pincode = models.CharField(max_length=10,null=True)
+    vendor_status = (
+        ('Active','Active'),
+        ('Inactive','Inactive'),
+    )
+    status = models.CharField(max_length=100,null=True,choices=vendor_status,default='Active')
+    Company = models.ForeignKey(Fin_Company_Details,on_delete=models.CASCADE,null=True)
+    Login_details = models.ForeignKey(Fin_Login_Details,on_delete=models.CASCADE,null=True)
 
-# class Fin_Vendor_History(models.Model):
-#     Company = models.ForeignKey(Fin_Company_Details,on_delete=models.CASCADE,null=True)
-#     Login_details = models.ForeignKey(Fin_Login_Details,on_delete=models.CASCADE,null=True)
-#     Vendor = models.ForeignKey(Fin_Vendor,on_delete=models.CASCADE,null=True)
+class Fin_Vendor_History(models.Model):
+    Company = models.ForeignKey(Fin_Company_Details,on_delete=models.CASCADE,null=True)
+    Login_details = models.ForeignKey(Fin_Login_Details,on_delete=models.CASCADE,null=True)
+    Vendor = models.ForeignKey(Fin_Vendor,on_delete=models.CASCADE,null=True)
+    Date = models.DateField(auto_now_add=True,auto_now=False,null=True)
+    Action_choices = (
+        ('Created', 'Created'),
+        ('Edited', 'Edited'),
+    )
+    Action = models.CharField(max_length=30,null=True,choices=Action_choices)

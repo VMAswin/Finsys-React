@@ -75,7 +75,7 @@ function Addvendor () {
     const [email, setEmail] = useState("");
     const [website, setWebsite] = useState("");
     const [mobile, setMobile] = useState("");
-  
+    const [currency, setCurrency] = useState("");
     const [bStreet, setBStreet] = useState("");
     const [bCity, setBCity] = useState("");
     const [bState, setBState] = useState("");
@@ -93,19 +93,46 @@ function Addvendor () {
   
       var dt = {
         Id: ID,
+        Title:title,
+        Firstname:firstName,
+        Lastname:lastName,
+        Company:company,
+        Location:location,
+        Email:email,
+        Website:website,
+        Mobile:mobile,
+        Gsttype:gstType,
+        Gstno:gstIn,
+        Panno:panNo,
+        Placeofsupply:placeOfSupply,
+        Currency:currency,
+        Openingbalance:oBal,
+        Openingbalatype:oBalType,
+        Creditlimit:creditLimit,
+        Payment:paymentTerm,
+        Billingstreet:bStreet,
+        Billingcity:bCity,
+        Billingcountry:bCountry,
+        Billingstate:bState,
+        Billingpin:bPincode,
+        Shipstreet:sStreet,
+        Shipcity:sCity,
+        Shipstate:sState,
+        Shippin:sPincode,
+        Shipcountry:sCountry,
         status: "Active",
       };
   
       axios
-        .post(`${config.base_url}/create_new_item/`, dt)
+        .post(`${config.base_url}/add_vendor_new/`, dt)
         .then((res) => {
           console.log("ITM RES=", res);
           if (res.data.status) {
             Toast.fire({
               icon: "success",
-              title: "Item Created",
+              title: "Vendor Added",
             });
-            navigate("/items");
+            navigate("/vendors");
           }
           if (!res.data.status && res.data.message != "") {
             Swal.fire({
@@ -190,16 +217,11 @@ function Addvendor () {
     function placeShipAddress() {
         var chkbtn = document.getElementById("shipAddress");
         if (chkbtn.checked == true) {
-          document.getElementById("shipstreet").value =
-            document.getElementById("street").value;
-          document.getElementById("shipcity").value =
-            document.getElementById("city").value;
-          document.getElementById("shippinco").value =
-            document.getElementById("pinco").value;
-          document.getElementById("shipcountry").value =
-            document.getElementById("country").value;
-          document.getElementById("shipState").value =
-            document.getElementById("state").value;
+          document.getElementById("shipstreet").value = document.getElementById("street").value;
+          document.getElementById("shipcity").value =document.getElementById("city").value;
+          document.getElementById("shippinco").value = document.getElementById("pinco").value;
+          document.getElementById("shipcountry").value = document.getElementById("country").value;
+          document.getElementById("shipState").value = document.getElementById("state").value;
         } else {
           document.getElementById("shipstreet").value = "";
           document.getElementById("shipcity").value = "";
@@ -547,7 +569,7 @@ function Addvendor () {
               <h4 className="mb-0">Vendor Details</h4>
             </div>
             <hr />
-            <form className="needs-validation px-1">
+            <form className="needs-validation px-1" onSubmit={handleSubmit}>
               <div className="row mt-3 w-100">
                 <div className="col-md-3">
                   <label htmlFor="title">Title</label>
@@ -837,8 +859,8 @@ function Addvendor () {
                   <select
                     name="currency"
                     id="currency"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    value={currency}
+                    onChange={(e) => setCurrency(e.target.value)}
                     className="form-control"
                   >
                     <option value="Mr">INR - Indian Rupee</option>
@@ -1070,7 +1092,7 @@ function Addvendor () {
                           className="form-control"
                           required
                           id="pinco"
-                          name="pincode"
+                          name="pinco"
                           value={bPincode}
                           onChange={(e) => setBPincode(e.target.value)}
                           style={{ backgroundColor: "#43596c", color: "white" }}
@@ -1237,7 +1259,7 @@ function Addvendor () {
                           type="text"
                           className="form-control"
                           id="shippinco"
-                          name="shippincode"
+                          name="shippinco"
                           style={{ backgroundColor: "#43596c", color: "white" }}
                           placeholder="PIN code"
                           value={sPincode}

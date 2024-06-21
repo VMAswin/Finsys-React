@@ -4668,6 +4668,72 @@ def Fin_checkCustomerName(request):
 
 # Vendor
 
-# @api_view(['POST'])
-# def add_vendor_new(request):
+@api_view(("POST",))
+def Fin_add_vendor_new(request):
+    try:
+        v_id = request.data["Id"]
+        data = Fin_Login_Details.objects.get(id=v_id)
+        if data.User_Type == "Company":
+            com = Fin_Company_Details.objects.get(Login_Id=v_id)
+        else:
+            com = Fin_Staff_Details.objects.get(Login_Id=v_id).company_id
+        title = request.data["Title"]
+        fname = request.data["Firstname"]
+        lname = request.data["Lastname"]
+        company = request.data["Company"]
+        location = request.data["Location"]
+        email = request.data["Email"]
+        website = request.data["Website"]
+        mobile = request.data["Mobile"]
+        gsttype = request.data["Gsttype"]
+        gstno = request.data["Gstno"]
+        pan = request.data["Panno"]
+        placeofsupply = request.data["Placeofsupply"]
+        currency = request.data["Currency"]
+        openingbal = request.data["Openingbalance"]
+        openingbaltype = request.data["Openingbalatype"]
+        creditlimit = request.data["Creditlimit"]
+        paymentterm = request.data["Payment"]
+        bilstr = request.data["Billingstreet"]
+        bilcountry = request.data["Billingcountry"]
+        bilstate = request.data["Billingstate"]
+        bilpin = request.data["Billingpin"]
+        bilcity = request.data["Billingcity"]
+        shipstr = request.data["Shipstreet"]
+        shipcountry = request.data["Shipcountry"]
+        shipstate = request.data["Shipstate"]
+        shipcity = request.data["Shipcity"]
+        shippin = request.data["Shippin"]
+        st = request.data["status"]
+        print(shipstr)
+        vendor = Fin_Vendor.objects.create(Title=title,First_name=fname,Last_name=lname,Vendor_email=email,Mobile=mobile,Company_Name=company,Location=location,Website=website,
+                                           GST_Treatment=gsttype,GST_Number=gstno,Pan_Number=pan,Opening_balance_type=openingbaltype,Opening_balance=openingbal,Credit_limit=creditlimit,
+                                           Place_of_supply=placeofsupply,Billing_street=bilstr,Billing_city=bilcity,Billing_state=bilstate,Billing_country=bilcountry,Billing_pincode=bilpin,
+                                           Shipping_street=shipstr,Shipping_city=shipcity,Shipping_state=shipstate,Shipping_country=shipcountry,Shipping_pincode=shippin,status=st,Company=com,Login_details=data)
+        vendor.save()
+        return Response({"status": True, "message": 'Success'})
+    except Exception as e:
+        return Response(
+            {"status": False, "message": str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+    
+@api_view(("GET",))
+def Fin_all_vendors(request,id):
+    try:
+        data = Fin_Login_Details.objects.get(id=id)
+        if data.User_Type == "Company":
+            com = Fin_Company_Details.objects.get(Login_Id=id)
+        else:
+            com = Fin_Staff_Details.objects.get(Login_Id=id).company_id
+        vendors = Fin_Vendor.objects.filter(Company=com)
+        serializer = VendorSerializer(vendors, many=True)
+        return Response(
+            {"status": True, "vendors": serializer.data}, status=status.HTTP_200_OK
+        )
+    except Exception as e:
+        return Response(
+            {"status": False, "message": str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
     

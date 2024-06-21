@@ -9,16 +9,16 @@ import config from "../../../functions/config";
 function Vendors () {
     const navigate = useNavigate();
     function exportToExcel() {
-        const Table = document.getElementById("customersTable");
+        const Table = document.getElementById("vendorsTable");
         const ws = XLSX.utils.table_to_sheet(Table);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-        XLSX.writeFile(wb, "Customers.xlsx");
+        XLSX.writeFile(wb, "Vendors.xlsx");
       }
     
       function sortTable(columnIndex) {
         var table, rows, switching, i, x, y, shouldSwitch;
-        table = document.getElementById("customersTable");
+        table = document.getElementById("vendorsTable");
         switching = true;
     
         while (switching) {
@@ -48,7 +48,7 @@ function Vendors () {
       }
     
       function filterTable(row, filterValue) {
-        var table = document.getElementById("customersTable");
+        var table = document.getElementById("vendorsTable");
         var rows = table.getElementsByTagName("tr");
     
         for (var i = 1; i < rows.length; i++) {
@@ -66,7 +66,7 @@ function Vendors () {
       }
     
       function sortBalAsc() {
-        var table = document.getElementById("customersTable");
+        var table = document.getElementById("vendorsTable");
         var rows = Array.from(table.rows).slice(1);
     
         rows.sort(function (a, b) {
@@ -87,7 +87,7 @@ function Vendors () {
       }
     
       function searchTable(){
-        var rows = document.querySelectorAll('#customersTable tbody tr');
+        var rows = document.querySelectorAll('#vendorsTable tbody tr');
         var val = document.getElementById('search').value.trim().replace(/ +/g, ' ').toLowerCase();
         rows.forEach(function(row) {
           var text = row.textContent.replace(/\s+/g, ' ').toLowerCase();
@@ -99,20 +99,20 @@ function Vendors () {
       const [customers, setCustomers] = useState([]);
     
       const fetchCustomers = () =>{
-        axios.get(`${config.base_url}/fetch_customers/${ID}/`).then((res)=>{
+        axios.get(`${config.base_url}/all_vendors/${ID}/`).then((res)=>{
           console.log("CUST RES=",res)
           if(res.data.status){
-            var cust = res.data.customers;
+            var cust = res.data.vendors;
             setCustomers([])
             cust.map((i)=>{
               var obj = {
                 id: i.id,
-                name: i.first_name+" "+i.last_name,
-                gstType: i.gst_type,
-                gstIn: i.gstin,
-                mailId: i.email,
-                openingBalance: i.opening_balance,
-                balance: i.current_balance,
+                name: i.First_name+" "+i.Last_name,
+                gstType: i.GST_Treatment,
+                gstIn: i.GST_Number,
+                mailId: i.Vendor_email,
+                openingBalance: i.Opening_balance,
+                mobile: i.Mobile,
                 status: i.status
               }
               setCustomers((prevState)=>[
@@ -298,7 +298,7 @@ function Vendors () {
           <div className="table-responsive">
             <table
               className="table table-responsive-md table-hover mt-4"
-              id="customersTable"
+              id="vendorsTable"
               style={{ textAlign: "center" }}
             >
               <thead>
@@ -323,11 +323,14 @@ function Vendors () {
                   >
                     <td>{index+1}</td>
                     <td>{i.name}</td>
-                    <td>{i.gstType}</td>
-                    <td>{i.gstIn}</td>
+                    <td>{i.mobile}</td>
                     <td>{i.mailId}</td>
+                    <td>{i.gstType}</td>
+                    {i.gstIn == '' ?(
+                      <td>None</td>
+                    ):
+                    (<td>{i.gstIn}</td>)}
                     <td>{i.openingBalance}</td>
-                    <td>{i.balance}</td>
                     <td>{i.status}</td>
                   </tr>
                 ))}

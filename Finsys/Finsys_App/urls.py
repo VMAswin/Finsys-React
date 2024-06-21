@@ -92,4 +92,8 @@ urlpatterns = [
     path('check_email/',Fin_checkEmail),
     path('check_customer_name/',Fin_checkCustomerName),
 
+    # Vendor
+
+    path('add_vendor_new/',Fin_add_vendor_new),
+    path('all_vendors/<int:id>/',Fin_all_vendors),
 ]

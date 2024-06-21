@@ -87,3 +87,8 @@ class PriceListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fin_Price_List
         fields = '__all__'
+
+class VendorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Fin_Vendor
+        fields = '__all__'
